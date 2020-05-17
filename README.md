@@ -1,1 +1,1 @@
-[Online](taroxlin.github.io/cyclic-menu/cyclic-menu)
+[Online](https://taroxlin.github.io/cyclic-menu/cyclic-menu/)
