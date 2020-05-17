@@ -1,35 +1,36 @@
-.main-menu-bar{
-    background-color: blue;
+
+.navigation{
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    justify-content: space-evenly;
+    font-size: 15px;
     margin: auto;
-    padding: 20px;
-    text-align: center;
-}
-.menuBox{
-   display: flex;
-   flex-direction: rows;
-   width: 100%;
-   justify-content: stretch;
 }
 
-.day-container{
-    flex-grow: 1;
-}
-.menu-description,.menu-day,.menu-soup,.menu-mainMeal,.menu-salad,.menu-dessert{
+.menu-topic{
+    background-color: blue;
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    text-align: center;
     border: 1px solid black;
-    min-height: 40px;
 }
-.menu-description{
-    background-color: cornsilk;
+.Menu{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
-.menu-day{
-    background-color: cyan;
+.expanded-item{
+    background-color: teal;
+    text-align: center;
+    line-height: 30px;
+    background-origin: padding-box;
+    margin-top: 1px;
+    border: 1px solid black;
+    width: calc(100% - 2px )
+
 }
-.menu-mainMeal,.menu-soup{
-    background-color: darkorange;
-}
-.menu-salad,.menu-dessert{
-    background-color: darkorchid;
-}
-.selected{
-    background-color: yellow !important;
+.selected {
+    background-color: chartreuse !important;
 }

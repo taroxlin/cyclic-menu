@@ -1,119 +1,102 @@
-const body = document.getElementById("body");
-const mainBar = document.createElement("div");
-body.appendChild(mainBar);
-mainBar.classList.add("main-menu-bar");
-mainBar.innerHTML = "Apollo School";
-const mainCont = document.createElement("div");
-body.appendChild(mainCont);
-mainCont.classList.add("menuBox");
+// Shorthand console.log // 
+const l =(e)=> console.log(e);
+//global selector//
+const bodySelector = document.getElementById("body");
 
-class naviMenu {
-  constructor(obj) {
-    this.obj = obj;
-    this.selectnum = -1;
-    body.addEventListener("keydown", this.clickHandler);
-    this.menuClasses = {
-      desc: "menu-description",
-      name: "menu-day",
-      soup: "menu-soup",
-      mainMeal: "menu-mainMeal",
-      veggie: "menu-salad",
-      dessert: "menu-dessert"
-    };
-    this.init();
+class Navi {
+  constructor() {
+    this.tabs = [];
+    this.selector = bodySelector.appendChild(document.createElement("nav"));
+    this.selector.classList.add("navigation");
+    this.activeMenu = -1;
+    bodySelector.addEventListener("keydown", this.clickHandler);
   }
 
   clickHandler = e=>{
-      this.changeSelectNum(e.keyCode);
+    this.changeActivedMenu(e.keyCode);
+}
+// Adding new tab To navigation Ex. Object.newTab('Options',['opt1','opt2'])
+  newTab(name, barsArray) {
+    let p = new Menu(name, barsArray, this.selector);
+    this.tabs.push(p);
+    return p;
+  }
+  //Remove Existing tab by
+  removeTab(a){
+      const selector = document.getElementById(`menuId${this.numberOfTabs-1}`)
+      selector.remove()
   }
 
-  changeHiLight(nodeArr,operation){
-      for(let i = 0; nodeArr.length > i;i++){
-          if(operation ==='add')
-          nodeArr[i].classList.add('selected')
-          else if(operation ==='remove')
-          nodeArr[i].classList.remove('selected')
-        }
+  get allTabs() {
+    return this.tabs;
   }
-  changeSelectNum(code){
-     let selector = document.getElementsByClassName('day-container')
-    if(code === 39){
-        if(this.selectnum !=-1){
-            this.changeHiLight(selector[this.selectnum].childNodes,'remove')
-        }
-    this.selectnum === selector.length-1 ? this.selectnum = 0 : this.selectnum += 1;
-    }else if (code === 37){
-        if(this.selectnum !=-1){
-            this.changeHiLight(selector[this.selectnum].childNodes,'remove')
-        }
-        this.selectnum <= 0 ? this.selectnum = selector.length-1 : this.selectnum -= 1;
+
+  get numberOfTabs() {
+    return this.tabs.length;
+  }
+
+  changeActivedMenu(code) {
+    if (this.activeMenu != -1) {
+      this.tabs[this.activeMenu].hideExpand();
+      const num = document.getElementById(`menuId${this.activeMenu}`).firstChild;
+      num.classList.remove('selected');
     }
-    this.changeHiLight(selector[this.selectnum].childNodes,'add');
-  }
-
-
-  initElement(objElement, parent, key) {
-    const meals = ["name", "soup", "mainMeal", "veggie", "dessert"];
-    for (let i = 0; meals.length > i; i++) {
-      const container = document.createElement("div");
-      parent.append(container);
-      objElement.hasOwnProperty(meals[i])
-        ? (container.innerHTML = objElement[meals[i]])
-        : "";
-      key === "desc"
-        ? container.classList.add(this.menuClasses[key])
-        : container.classList.add(this.menuClasses[meals[i]]);
+    if (code === 39) {
+      this.activeMenu === this.numberOfTabs - 1
+        ? (this.activeMenu = 0)
+        : (this.activeMenu += 1);
+    } else if (code === 37) {
+      this.activeMenu === 0
+        ? (this.activeMenu = this.numberOfTabs - 1)
+        : (this.activeMenu -= 1);
     }
+    this.tabs[this.activeMenu].showExpand();
+    const num = document.getElementById(`menuId${this.activeMenu}`).firstChild
+    num.classList.add('selected')
   }
 
+  
+}
+
+class Menu {
+  constructor(name, barsArray, parentSelector) {
+    this.name = name;
+    this.barsArray = barsArray;
+    this.parentSelector = parentSelector;
+    this.id = this.parentSelector.childNodes.length;
+    this.init();
+  }
   init() {
-    for (const key in this.obj) {
-      const draw = document.createElement("div");
-      mainCont.appendChild(draw);
-      draw.classList.add("day-container");
-      this.initElement(this.obj[key], draw, key);
+    const selector = this.parentSelector;
+    let div = document.createElement("div");
+    selector.appendChild(div);
+    div.classList.add("Menu");
+    div.id = `menuId${this.id}`;
+    const innerDiv = document.createElement("div");
+    div.appendChild(innerDiv);
+    innerDiv.innerHTML = this.name;
+    innerDiv.classList.add("menu-topic");
+  }
+
+  showExpand() {
+    const selector = document.getElementById(`menuId${this.id}`);
+    for (let barsName of this.barsArray) {
+      const div = document.createElement("div");
+      selector.appendChild(div);
+      div.innerHTML = barsName;
+      div.classList.add("expanded-item");
+    }
+  }
+
+  hideExpand() {
+    const selector = document.getElementById(`menuId${this.id}`);
+    for (let i = 0; this.barsArray.length > i; i++) {
+      selector.lastChild.remove();
     }
   }
 }
 
-const daily = {
-  desc: {
-    name: "Day",
-    soup: "Soup",
-    mainMeal: "Main-Meal",
-    veggie: "Salad type",
-    dessert: "Dessert ",
-  },
-  monday: {
-    name: "monday",
-    soup: "Onion Soup",
-    dessert: "ice",
-    veggie: "green",
-    mainMeal: "Fish-O-fillet + fries",
-  },
-  tuesday: {
-    name: "tuesday",
-    soup: "beetroot soup",
-    mainMeal: "Hamburger",
-    dessert: "Burning Bananas !",
-    veggie: "Shattered ice Salad",
-  },
-  wendsday: {
-    name: "wendsday",
-    soup: "borsch",
-    veggie: "dsaasd",
-  },
-  thursday: {
-    name: "thursday",
-    soup: "cabbage soup",
-    dessert: "Pancakes",
-  },
-  friday: {
-    name: "friday",
-    soup: "broth",
-    mainMeal: "Something",
-    dessert: "beer",
-  },
-};
-
-const aa = new naviMenu(daily);
+let navigation = new Navi();
+navigation.newTab("Main", ["MainOpt1", "MainOpt2", "MainOpt3"]);
+navigation.newTab("Others", ["OthersOption1", "OthersOption2", "OthersOption3"]);
+navigation.newTab("File", ["save", "load", "cancel"]);
