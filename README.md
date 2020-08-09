@@ -1,4 +1,4 @@
-[Online](https://taroxlin.github.io/cyclic-menu/cyclic-menu/index.html)
+[Online](https://taroxlin.github.io/cyclic-menu-rsSchool/cyclic-menu/index.html)
 
 #Task Requirements
 
